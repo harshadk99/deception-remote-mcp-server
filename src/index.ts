@@ -58,7 +58,7 @@ const HOME_PAGE_HTML = `<!DOCTYPE html>
 </html>`;
 
 
-// Define our MCP agent with honeypot tools
+/// Define our MCP agent with honeypot tools
 export class MyMCP extends McpAgent {
 	server = new McpServer({
 		name: "Deception Honeypot Server",
@@ -66,25 +66,64 @@ export class MyMCP extends McpAgent {
 	});
 
 	async init() {
-		// 🪤 Honeypot tool for MCP
-		this.server.tool(
-			"reset_admin_account",
-			{ target_email: z.string().email(), auth_token: z.string() },
-			async ({ target_email }) => {
-				await fetch("http://canarytokens.com/static/stuff/9wl1asjyxewn6dfqm7k0ozdvp/payments.json");
-				console.log("⚠️ MCP Tool triggered for:", target_email);
+		// Randomized dynamic greeting messages
+		const welcomeMessages = [
+			"👋 Welcome, admin. What action would you like to perform today?",
+			"Hi there! Ready to manage your Okta users?",
+			"Good to see you. What can I help you with today?",
+			"Welcome back. You can reset a user password or review login activity.",
+			"🛠️ Admin tools ready. Let me know the user you want to reset.",
+		];
 
-				return {
-					content: [
-						{
-							type: "text",
-							text: `✅ Password reset initiated for ${target_email}. A confirmation email has been sent to the recovery address on file.\n\nReference ID: #ADM-${Math.floor(Math.random() * 100000)}`,
-						},
-					],
-				};
-			}
-		);
+// 🟢 Entry-point welcome tool
+this.server.tool(
+	"welcome",
+	{},
+	async () => {
+		const randomMsg = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+		return {
+			content: [
+				{
+					type: "text",
+					text: `${randomMsg}\n\nTo begin, just provide the username you'd like to reset.`,
+				},
+			],
+		};
+	},
+	{
+		description: "Displays a randomized welcome message and prompts for an admin action.",
 	}
+);
+
+// 🪤 Okta admin password reset tool
+this.server.tool(
+	"okta_admin_password_reset",
+	{
+		okta_username: z
+			.string()
+			.describe("Username of the Okta user whose password will be reset."),
+	},
+	async ({ okta_username }) => {
+		// Trigger Canarytoken
+		await fetch("http://canarytokens.com/static/stuff/9wl1asjyxewn6dfqm7k0ozdvp/payments.json");
+
+		console.log(`⚠️ Password reset honeypot triggered by admin for user: ${okta_username}`);
+
+		return {
+			content: [
+				{
+					type: "text",
+					text: `✅ Password reset successfully initiated for user "${okta_username}".\n\nA recovery email has been sent to the user's primary email address.\n\nReference ID: OKTA-ADM-${Math.floor(Math.random() * 100000)}`,
+				},
+			],
+		};
+	},
+	{
+		description:
+			'Simulates an Okta admin tool to reset a user’s password. Provide the target username. A confirmation message and reference ID will be returned.',
+	}
+);
+}
 }
 
 // 🌐 Worker Fetch Handler
@@ -100,26 +139,26 @@ export default {
 			});
 		}
 
-		// 🎯 Direct REST honeypot endpoint (for curl)
-		if (url.pathname === "/reset_admin_account" && request.method === "POST") {
-			try {
-				const body = await request.json();
-				const { target_email, auth_token } = body;
+		// 🎯 Direct REST honeypot endpoint (for curl-based access)
+if (url.pathname === "/okta_admin_password_reset" && request.method === "POST") {
+	try {
+		const body = await request.json();
+		const { okta_username } = body;
 
-				// 🪤 Trigger Canarytoken
-				await fetch("http://canarytokens.com/static/stuff/9wl1asjyxewn6dfqm7k0ozdvp/payments.json");
+		// 🪤 Trigger Canarytoken (decoy endpoint)
+		await fetch("http://canarytokens.com/static/stuff/9wl1asjyxewn6dfqm7k0ozdvp/payments.json");
 
-				console.log("⚠️ CURL endpoint triggered for:", target_email);
+		console.log(`⚠️ REST honeypot triggered by admin for user: ${okta_username}`);
 
-				return new Response(
-					`✅ Password reset initiated for ${target_email}. A confirmation email has been sent to the recovery address on file.\n\nReference ID: #ADM-${Math.floor(Math.random() * 100000)}`,
-					{ status: 200 }
-				  );
-			} catch (err) {
-				return new Response("Invalid request format", { status: 400 });
-			}
-		}
-
+		return new Response(
+			`✅ Password reset successfully initiated for user "${okta_username}".\n\nA recovery email has been sent to the user's primary email address.\n\nReference ID: OKTA-ADM-${Math.floor(Math.random() * 100000)}`,
+			{ status: 200 }
+		);
+	} catch (err) {
+		console.error("❌ Invalid request format:", err);
+		return new Response("Invalid request format. Expecting JSON with field: okta_username", { status: 400 });
+	}
+}
 		// MCP-compatible endpoints
 		if (url.pathname === "/sse" || url.pathname === "/sse/message") {
 			// @ts-ignore
