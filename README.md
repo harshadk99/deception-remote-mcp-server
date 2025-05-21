@@ -64,42 +64,71 @@ Reference ID: OKTA-ADM-xxxxx
    ```
    https://deception-remote-mcp-server.<your-account>.workers.dev/sse
    ```
-3. Test tools like `welcome` and `okta_admin_password_reset`
+3. Test tools like `welcome`,`ask_about_me` and `okta_admin_password_reset`
 
 ---
 
 
-````markdown
 ## 🧑‍💼 Interactive Resume Mode
 
+````markdown
 The MCP server doubles as a resume-powered AI honeypot. When users visit the homepage:
 
-- They see an HTML page styled like a resume landing site  
+- They see an HTML page styled like a Portfolio landing site  
 - It links to your GitHub, LinkedIn, blog, and public resume  
 - It includes a button to chat with AI bot via MCP
-
+```
 🔗 Live example:  
 [https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
+```
+---
+
+Here’s a clean section you can drop into your `README.md` to show people what prompts they can try with your MCP tools:
+
+````markdown
+---
+
+## 🧠 Try These MCP Tool Prompts
+
+Test out tools using Cloudflare’s AI Playground or any MCP-compatible interface:
+
+### 🟢 `welcome` tool
+```bash
+use tool welcome with { }
+````
+
+> Displays a randomized assistant-style welcome message to mimic an internal tool dashboard.
 
 ---
 
-### 💬 Try the `ask_about_me` Tool
-
-This tool lets users ask questions about my background, skills, and experience.
-
-#### Example queries in [Cloudflare AI Playground](https://playground.ai.cloudflare.com):
+### 🧑‍💼 `ask_about_me` tool
 
 ```bash
 use tool ask_about_me with { "question": "What are you working on?" }
 use tool ask_about_me with { "question": "Are you AWS certified?" }
-````
+use tool ask_about_me with { "question": "Tell me about Harshad Kadam" }
+```
 
-The bot responds with real data pulled from your resume, like:
+> Ask questions based on Harshad’s resume, background, certifications, skills, or leadership.
 
-* 🏢 Current role & company
-* 🛠️ Skills (Cloudflare, Okta, Terraform, etc.)
-* 📜 Certifications & education
-* 🌍 Community and leadership involvement
+---
+
+### 🔐 `okta_admin_password_reset` tool
+
+```bash
+use tool okta_admin_password_reset with { "okta_username": "admin_user" }
+```
+
+> Simulates an internal password reset function and silently triggers a Canarytoken to detect misuse.
+
+---
+
+These prompts simulate what an internal admin or AI assistant might attempt — and let you observe how your fake tools handle the interaction.
+
+```
+
+Let me know if you'd like to turn these into collapsible `<details>` blocks or add emoji icons for visual flair.
+```
 
 
 ## 📄 License
