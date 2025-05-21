@@ -1,50 +1,70 @@
-# Building a Remote MCP Server on Cloudflare (Without Auth)
 
-This example allows you to deploy a remote MCP server that doesn't require authentication on Cloudflare Workers. 
+````markdown
+# 🛡️ Deception Remote MCP Server
 
-## Get started: 
+A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). It simulates internal Okta admin tools to detect unauthorized access attempts using Canarytokens.
 
-[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/ai/tree/main/demos/remote-mcp-authless)
+## 🚀 Deploy Your Own
 
-This will deploy your MCP server to a URL like: `remote-mcp-server-authless.<your-account>.workers.dev/sse`
+[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/harshadk99/deception-remote-mcp-server)
 
-Alternatively, you can use the command line below to get the remote MCP Server created on your local machine:
+Or deploy manually:
+
 ```bash
-npm create cloudflare@latest -- my-mcp-server --template=cloudflare/ai/demos/remote-mcp-authless
+npm install -g wrangler
+wrangler login
+wrangler publish
+````
+
+Your MCP server will be deployed to:
+
+```
+https://deception-remote-mcp-server.<your-account>.workers.dev
 ```
 
-## Customizing your MCP Server
+---
 
-To add your own [tools](https://developers.cloudflare.com/agents/model-context-protocol/tools/) to the MCP server, define each tool inside the `init()` method of `src/index.ts` using `this.server.tool(...)`. 
+## 🔧 Features
 
-## Connect to Cloudflare AI Playground
+* `okta_admin_password_reset`: simulates admin reset of any user's password
+* Randomized assistant-style welcome messages
+* Canarytoken integration for silent tripwire detection
+* REST and SSE endpoints supported
 
-You can connect to your MCP server from the Cloudflare AI Playground, which is a remote MCP client:
+---
 
-1. Go to https://playground.ai.cloudflare.com/
-2. Enter your deployed MCP server URL (`remote-mcp-server-authless.<your-account>.workers.dev/sse`)
-3. You can now use your MCP tools directly from the playground!
+## 🧪 Test It with CURL
 
-## Connect Claude Desktop to your MCP server
-
-You can also connect to your remote MCP server from local MCP clients, by using the [mcp-remote proxy](https://www.npmjs.com/package/mcp-remote). 
-
-To connect to your MCP server from Claude Desktop, follow [Anthropic's Quickstart](https://modelcontextprotocol.io/quickstart/user) and within Claude Desktop go to Settings > Developer > Edit Config.
-
-Update with this configuration:
-
-```json
-{
-  "mcpServers": {
-    "calculator": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://localhost:8787/sse"  // or remote-mcp-server-authless.your-account.workers.dev/sse
-      ]
-    }
-  }
-}
+```bash
+curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta_admin_password_reset \
+  -H "Content-Type: application/json" \
+  -d '{"okta_username": "admin"}'
 ```
 
-Restart Claude and you should see the tools become available. 
+Expected response:
+
+```
+✅ Password reset successfully initiated for user "admin".
+A recovery email has been sent...
+Reference ID: OKTA-ADM-xxxxx
+```
+
+---
+
+## 📡 Connect to Cloudflare AI Playground
+
+1. Go to [https://playground.ai.cloudflare.com](https://playground.ai.cloudflare.com)
+2. Enter your MCP endpoint:
+
+   ```
+   https://deception-remote-mcp-server.<your-account>.workers.dev/sse
+   ```
+3. Test tools like `welcome` and `okta_admin_password_reset`
+
+---
+
+## 📄 License
+
+MIT – for educational and research use only.
+
+```
