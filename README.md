@@ -1,4 +1,3 @@
-
 ````markdown
 # 🛡️ Deception Remote MCP Server
 
@@ -8,6 +7,8 @@
 ![Deception](https://img.shields.io/badge/canary-triggered-yellow)
 
 A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). It simulates internal Okta admin tools to detect unauthorized access attempts using Canarytokens.
+
+---
 
 ## 🚀 Deploy Your Own
 
@@ -32,7 +33,8 @@ https://deception-remote-mcp-server.<your-account>.workers.dev
 ## 🔧 Features
 
 * `okta_admin_password_reset`: simulates admin reset of any user's password
-* Randomized assistant-style welcome messages
+* `ask_about_me`: conversational Q\&A based on Harshad’s resume
+* `welcome`: randomized assistant-style greeting
 * Canarytoken integration for silent tripwire detection
 * REST and SSE endpoints supported
 
@@ -64,28 +66,21 @@ Reference ID: OKTA-ADM-xxxxx
    ```
    https://deception-remote-mcp-server.<your-account>.workers.dev/sse
    ```
-3. Test tools like `welcome`,`ask_about_me` and `okta_admin_password_reset`
+3. Test tools like `welcome`, `ask_about_me`, and `okta_admin_password_reset`
 
 ---
-
 
 ## 🧑‍💼 Interactive Resume Mode
 
-````markdown
 The MCP server doubles as a resume-powered AI honeypot. When users visit the homepage:
 
-- They see an HTML page styled like a Portfolio landing site  
-- It links to your GitHub, LinkedIn, blog, and public resume  
-- It includes a button to chat with AI bot via MCP
-```
-🔗 Live example:  
+* They see an HTML page styled like a portfolio landing site
+* It links to your GitHub, LinkedIn, blog, and public resume
+* It includes a button to chat with the AI bot via MCP
+
+🔗 Live example:
 [https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
-```
----
 
-Here’s a clean section you can drop into your `README.md` to show people what prompts they can try with your MCP tools:
-
-````markdown
 ---
 
 ## 🧠 Try These MCP Tool Prompts
@@ -93,9 +88,10 @@ Here’s a clean section you can drop into your `README.md` to show people what 
 Test out tools using Cloudflare’s AI Playground or any MCP-compatible interface:
 
 ### 🟢 `welcome` tool
+
 ```bash
 use tool welcome with { }
-````
+```
 
 > Displays a randomized assistant-style welcome message to mimic an internal tool dashboard.
 
@@ -125,12 +121,13 @@ use tool okta_admin_password_reset with { "okta_username": "admin_user" }
 
 These prompts simulate what an internal admin or AI assistant might attempt — and let you observe how your fake tools handle the interaction.
 
-```
-
-Let me know if you'd like to turn these into collapsible `<details>` blocks or add emoji icons for visual flair.
-```
-
+---
 
 ## 📄 License
 
 MIT – for educational and research use only.
+
+```
+
+Let me know if you want to add a GIF demo or shields like "Built with Cloudflare Workers" or "Powered by MCP".
+```
