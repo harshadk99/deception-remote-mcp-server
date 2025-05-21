@@ -68,6 +68,40 @@ Reference ID: OKTA-ADM-xxxxx
 
 ---
 
+
+````markdown
+## 🧑‍💼 Interactive Resume Mode
+
+The MCP server doubles as a resume-powered AI honeypot. When users visit the homepage:
+
+- They see an HTML page styled like a resume landing site  
+- It links to your GitHub, LinkedIn, blog, and public resume  
+- It includes a button to chat with AI bot via MCP
+
+🔗 Live example:  
+[https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
+
+---
+
+### 💬 Try the `ask_about_me` Tool
+
+This tool lets users ask questions about my background, skills, and experience.
+
+#### Example queries in [Cloudflare AI Playground](https://playground.ai.cloudflare.com):
+
+```bash
+use tool ask_about_me with { "question": "What are you working on?" }
+use tool ask_about_me with { "question": "Are you AWS certified?" }
+````
+
+The bot responds with real data pulled from your resume, like:
+
+* 🏢 Current role & company
+* 🛠️ Skills (Cloudflare, Okta, Terraform, etc.)
+* 📜 Certifications & education
+* 🌍 Community and leadership involvement
+
+
 ## 📄 License
 
 MIT – for educational and research use only.
