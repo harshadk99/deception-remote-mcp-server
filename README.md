@@ -126,8 +126,3 @@ These prompts simulate what an internal admin or AI assistant might attempt — 
 ## 📄 License
 
 MIT – for educational and research use only.
-
-```
-
-Let me know if you want to add a GIF demo or shields like "Built with Cloudflare Workers" or "Powered by MCP".
-```
