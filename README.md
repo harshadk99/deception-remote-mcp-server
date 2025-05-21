@@ -2,6 +2,11 @@
 ````markdown
 # 🛡️ Deception Remote MCP Server
 
+[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/harshadk99/deception-remote-mcp-server)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/github/v/tag/harshadk99/deception-remote-mcp-server)
+![Deception](https://img.shields.io/badge/canary-triggered-yellow)
+
 A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). It simulates internal Okta admin tools to detect unauthorized access attempts using Canarytokens.
 
 ## 🚀 Deploy Your Own
@@ -66,5 +71,3 @@ Reference ID: OKTA-ADM-xxxxx
 ## 📄 License
 
 MIT – for educational and research use only.
-
-```
