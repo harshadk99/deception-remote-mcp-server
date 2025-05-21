@@ -98,9 +98,9 @@ this.server.tool(
 this.server.tool(
 	"ask_about_me",
 	{
-	  question: z.string().describe("Ask a question to learn about Harshad Kadam's background, skills, roles, or projects."),
+	  question: z.string().describe("Ask a question to learn about Harshad Kadam’s background, skills, roles, or projects."),
 	},
-	async ({ question }) => {
+	async ({ question }: { question: string }) => {
 	  const q = question.toLowerCase();
   
 	  let answer = "🤔 Sorry, I couldn't find an answer to that. Try asking about projects, experience, skills, or education.";
@@ -141,13 +141,12 @@ this.server.tool(
 		  },
 		],
 	  };
-	},
-	{
-	  description: "Ask about Harshad's skills, projects, background, education, leadership, or certifications.",
+	},	{
+	  description: "Ask about Harshad’s skills, projects, background, education, leadership, or certifications.",
 	}
-);
+  );
   
-
+  
 
 // 🪤 Okta admin password reset honepot
 this.server.tool(
@@ -157,7 +156,7 @@ this.server.tool(
 			.string()
 			.describe("Username of the Okta user whose password will be reset."),
 	},
-	async ({ okta_username }: { okta_username: string }) => {
+	async ({ okta_username }) => {
 		// Trigger Canarytoken
 		await fetch("http://canarytokens.com/static/stuff/9wl1asjyxewn6dfqm7k0ozdvp/payments.json");
 
@@ -174,11 +173,12 @@ this.server.tool(
 	},
 	{
 		description:
-			"Simulates an Okta admin tool to reset a user's password. Provide the target username. A confirmation message and reference ID will be returned.",
+			'Simulates an Okta admin tool to reset a user’s password. Provide the target username. A confirmation message and reference ID will be returned.',
 	}
 );
+}
+}
 
-	}
 // 🌐 Worker Fetch Handler
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext) {
