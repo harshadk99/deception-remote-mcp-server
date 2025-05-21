@@ -69,10 +69,8 @@ export class MyMCP extends McpAgent {
 		// Randomized dynamic greeting messages
 		const welcomeMessages = [
 			"👋 Welcome, admin. What action would you like to perform today?",
-			"Hi there! Ready to manage your Okta users?",
 			"Good to see you. What can I help you with today?",
-			"Welcome back. You can reset a user password or review login activity.",
-			"🛠️ Admin tools ready. Let me know the user you want to reset.",
+			"🛠️ Hello Admin. Are you ready to explore different tools?",
 		];
 
 // 🟢 Entry-point welcome tool
@@ -95,7 +93,63 @@ this.server.tool(
 	}
 );
 
-// 🪤 Okta admin password reset tool
+
+// 🧠 Interactive Q&A about Harshad
+this.server.tool(
+	"ask_about_me",
+	{
+	  question: z.string().describe("Ask a question to learn about Harshad Kadam’s background, skills, roles, or projects."),
+	},
+	async ({ question }) => {
+	  const q = question.toLowerCase();
+  
+	  let answer = "🤔 Sorry, I couldn't find an answer to that. Try asking about projects, experience, skills, or education.";
+  
+	  if (q.includes("tell me about") || q.includes("who is") || q.includes("introduce") || q.includes("about harshad")) {
+		answer = `👋 Hi, I’m Harshad Kadam — a Senior Infrastructure Security Engineer based in Austin, TX with 9+ years of experience in network security, cloud infrastructure, and zero trust. I’ve led global teams, built scalable architectures in AWS, and currently drive innovation in deception engineering using Cloudflare MCP.`;
+	  } else if (q.includes("current project") || q.includes("working on")) {
+		answer = `🚀 I'm working on a deception honeypot detection system using Cloudflare MCP, combining fake admin tools, Canarytokens, and Zero Trust enforcement.`;
+	  } else if (q.includes("company") || q.includes("work") || q.includes("employer")) {
+		answer = `🏢 I work at Indeed Inc. as a Senior Infrastructure Security Engineer based in Austin, TX.`;
+	  } else if (q.includes("experience")) {
+		answer = `📈 I have 9+ years of experience in network security, cloud infrastructure, and production datacenter operations — progressing from Network Engineer to Security Tech Lead.`;
+	  } else if (q.includes("okta")) {
+		answer = `🔐 I’ve worked on Okta SSO, SCIM provisioning, AWS Workspaces integration, and Cloudflare Access controls.`;
+	  } else if (q.includes("cloudflare")) {
+		answer = `🌐 I’ve led Zero Trust and RBI rollouts using Cloudflare Access, including MCP deception engineering and policy enforcement.`;
+	  } else if (q.includes("aws")) {
+		answer = `☁️ I've designed multi-region AWS production networks, implemented AWS Network Firewall, and built secure onboarding for third-party contractors.`;
+	  } else if (q.includes("skills") || q.includes("tools") || q.includes("technologies")) {
+		answer = `🛠️ Tools/Skills: AWS, Okta, Cloudflare, Terraform, Python, CrowdStrike, Splunk, Datadog, Palo Alto, Aviatrix.`;
+	  } else if (q.includes("certification") || q.includes("certified")) {
+		answer = `📜 Certified in CISM, AWS Solutions Architect Associate, Terraform, Aviatrix, CCNA, and CCNP.`;
+	  } else if (q.includes("education") || q.includes("degree")) {
+		answer = `🎓 I have an MS in Networking Security & System Admin from Rochester Institute of Technology (GPA: 3.96).`;
+	  } else if (q.includes("leadership") || q.includes("manager") || q.includes("team")) {
+		answer = `👥 I’ve led cloud and security engineering teams, managed global projects, and driven mentorship and OKRs for strategic security programs.`;
+	  } else if (q.includes("community") || q.includes("mentorship") || q.includes("asian") || q.includes("inclusion")) {
+		answer = `🌏 I lead the AI-Champions Guild (450+ members), support DEIB+ through Indeed’s iBRGs, and was a Brand Ambassador for internal culture-building.`;
+	  } else if (q.includes("salary") || q.includes("compensation") || q.includes("how much") || q.includes("pay")) {
+		answer = `💰 I prefer not to disclose salary details. Feel free to ask about skills, tools, or achievements instead.`;
+	  }
+  
+	  return {
+		content: [
+		  {
+			type: "text",
+			text: answer,
+		  },
+		],
+	  };
+	},
+	{
+	  description: "Ask about Harshad’s skills, projects, background, education, leadership, or certifications.",
+	}
+  );
+  
+  
+
+// 🪤 Okta admin password reset honepot
 this.server.tool(
 	"okta_admin_password_reset",
 	{
