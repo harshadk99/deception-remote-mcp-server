@@ -1,5 +1,17 @@
+## 🧩 TL;DR
+
+This is a deception-based honeypot built using Cloudflare Workers and Model Context Protocol (MCP). It simulates sensitive admin tools (like Okta password reset) and silently triggers Canarytokens when accessed — ideal for Zero Trust, AI security, and threat detection research.
+
+## 💡 Why It Matters
+
+- ✅ First-of-its-kind use of MCP as a deception honeypot
+- 🧠 Detects unauthorized AI agent behavior in Zero Trust environments
+- 🌍 Serverless, globally distributed, and stealthy
+- 🎯 Easy to deploy, integrate, and extend
+
+
 ````markdown
-# 🛡️ Deception Remote MCP Server
+# 🛡️ Deception Remote MCP Server - AI-Powered Honeypot on Cloudflare Workers
 
 [![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/harshadk99/deception-remote-mcp-server)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -77,6 +89,8 @@ The MCP server doubles as a resume-powered AI honeypot. When users visit the hom
 * They see an HTML page styled like a portfolio landing site
 * It links to your GitHub, LinkedIn, blog, and public resume
 * It includes a button to chat with the AI bot via MCP
+* Use this as your AI-powered resume page to showcase engineering and security expertise while embedding deception engineering as a live demo.
+
 
 🔗 Live example:
 [https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
