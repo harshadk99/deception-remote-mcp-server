@@ -1,3 +1,12 @@
+# 🛡️ Deception Remote MCP Server - AI-Powered Honeypot
+
+![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Security](https://img.shields.io/badge/security-honeypot-red)
+![Model](https://img.shields.io/badge/MCP-compatible-blueviolet)
+
+A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). This project simulates sensitive internal tools to detect unauthorized access attempts and AI agent behaviors using Canarytokens.
+
 ## 🧩 TL;DR
 
 This is a deception-based honeypot built using Cloudflare Workers and Model Context Protocol (MCP). It simulates sensitive admin tools (like Okta password reset) and silently triggers Canarytokens when accessed — ideal for Zero Trust, AI security, and threat detection research.
@@ -8,19 +17,16 @@ This is a deception-based honeypot built using Cloudflare Workers and Model Cont
 - 🧠 Detects unauthorized AI agent behavior in Zero Trust environments
 - 🌍 Serverless, globally distributed, and stealthy
 - 🎯 Easy to deploy, integrate, and extend
+- 🛡️ Provides valuable threat intelligence about AI agent behaviors
 
+## 🔐 Security Features
 
-````markdown
-# 🛡️ Deception Remote MCP Server - AI-Powered Honeypot on Cloudflare Workers
-
-[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/harshadk99/deception-remote-mcp-server)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Version](https://img.shields.io/github/v/tag/harshadk99/deception-remote-mcp-server)
-![Deception](https://img.shields.io/badge/canary-triggered-yellow)
-
-A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). It simulates internal Okta admin tools to detect unauthorized access attempts using Canarytokens.
-
----
+- **Advanced Canarytoken Integration**: Enhanced tracking with User-Agent, IP, and interaction details
+- **Rate Limiting**: Protection against brute force and DoS attempts
+- **Sensitive Username Detection**: Special handling for admin, root, and other sensitive account access attempts
+- **Realistic Response Delays**: Mimics real system behavior to appear legitimate
+- **Enhanced Error Handling**: Secure error messages that don't reveal system details
+- **Extended Logging**: Detailed logs of all interaction attempts
 
 ## 🚀 Deploy Your Own
 
@@ -29,10 +35,12 @@ A serverless honeypot built using Cloudflare Workers and the Model Context Proto
 Or deploy manually:
 
 ```bash
-npm install -g wrangler
-wrangler login
-wrangler publish
-````
+# Install dependencies
+npm install
+
+# Deploy to Cloudflare Workers
+npm run deploy
+```
 
 Your MCP server will be deployed to:
 
@@ -40,35 +48,30 @@ Your MCP server will be deployed to:
 https://deception-remote-mcp-server.<your-account>.workers.dev
 ```
 
----
+## 🔧 Tools & Features
 
-## 🔧 Features
-
-* `okta_admin_password_reset`: simulates admin reset of any user's password
-* `ask_about_me`: conversational Q\&A based on Harshad’s resume
-* `welcome`: randomized assistant-style greeting
-* Canarytoken integration for silent tripwire detection
-* REST and SSE endpoints supported
-
----
+* **`welcome`**: Displays a welcome message with information about available tools
+* **`ask_about_me`**: Dynamic Q&A based on comprehensive resume data with 13+ question categories
+* **`okta_admin_password_reset`**: Simulates admin reset of user passwords with special handling for sensitive accounts
+* **Cybersecurity-themed UI**: Professional landing page with security-focused design
+* **Auto-populating playground links**: One-click access to AI playground with your server pre-configured
+* **REST and SSE endpoints**: Multiple access methods for broader coverage
 
 ## 🧪 Test It with CURL
 
 ```bash
 curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta_admin_password_reset \
   -H "Content-Type: application/json" \
+  -d '{"okta_username": "regular_user"}'
+```
+
+Try with sensitive usernames to see different responses:
+
+```bash
+curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta_admin_password_reset \
+  -H "Content-Type: application/json" \
   -d '{"okta_username": "admin"}'
 ```
-
-Expected response:
-
-```
-✅ Password reset successfully initiated for user "admin".
-A recovery email has been sent...
-Reference ID: OKTA-ADM-xxxxx
-```
-
----
 
 ## 📡 Connect to Cloudflare AI Playground
 
@@ -78,28 +81,20 @@ Reference ID: OKTA-ADM-xxxxx
    ```
    https://deception-remote-mcp-server.<your-account>.workers.dev/sse
    ```
-3. Test tools like `welcome`, `ask_about_me`, and `okta_admin_password_reset`
+   
+3. Or simply visit your homepage and click the "Launch AI Playground" button for auto-configuration
 
----
+## 🔍 How It Works
 
-## 🧑‍💼 Interactive Resume Mode
-
-The MCP server doubles as a resume-powered AI honeypot. When users visit the homepage:
-
-* They see an HTML page styled like a portfolio landing site
-* It links to your GitHub, LinkedIn, blog, and public resume
-* It includes a button to chat with the AI bot via MCP
-* Use this as your AI-powered resume page to showcase engineering and security expertise while embedding deception engineering as a live demo.
-
-
-🔗 Live example:
-[https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
-
----
+1. **Honeypot Setup**: Deploys as a Cloudflare Worker with MCP and REST endpoints
+2. **Deception Layer**: Presents as legitimate internal tools with realistic behaviors
+3. **Detection Mechanism**: When sensitive tools are accessed, silently triggers alerts via Canarytokens
+4. **Rate Limiting**: Prevents abuse with configurable request limits
+5. **Realistic Responses**: Implements variable delays and context-aware responses
 
 ## 🧠 Try These MCP Tool Prompts
 
-Test out tools using Cloudflare’s AI Playground or any MCP-compatible interface:
+Test out tools using Cloudflare's AI Playground or any MCP-compatible interface:
 
 ### 🟢 `welcome` tool
 
@@ -107,39 +102,50 @@ Test out tools using Cloudflare’s AI Playground or any MCP-compatible interfac
 use tool welcome with { }
 ```
 
-> Displays a randomized assistant-style welcome message to mimic an internal tool dashboard.
+> Displays a welcome message with guidance on using the available tools.
 
----
-
-### 🧑‍💼 `ask_about_me` tool
+### 🧑‍💼 `ask_about_me` tool - Now with enhanced response categories!
 
 ```bash
-use tool ask_about_me with { "question": "What are you working on?" }
-use tool ask_about_me with { "question": "Are you AWS certified?" }
-use tool ask_about_me with { "question": "Tell me about Harshad Kadam" }
+# Basic questions
+use tool ask_about_me with { "question": "Tell me about yourself" }
+use tool ask_about_me with { "question": "What do you do at Indeed?" }
+
+# Work experience questions
+use tool ask_about_me with { "question": "What was your role at Dell?" }
+use tool ask_about_me with { "question": "What's your work experience?" }
+
+# Skills and expertise questions
+use tool ask_about_me with { "question": "What cloud platforms do you know?" }
+use tool ask_about_me with { "question": "What are your security skills?" }
+
+# Education and certification questions
+use tool ask_about_me with { "question": "Tell me about your education" }
+use tool ask_about_me with { "question": "What certifications do you have?" }
 ```
-
-> Ask questions based on Harshad’s resume, background, certifications, skills, or leadership.
-
----
 
 ### 🔐 `okta_admin_password_reset` tool
 
 ```bash
-use tool okta_admin_password_reset with { "okta_username": "admin_user" }
+# Regular account
+use tool okta_admin_password_reset with { "okta_username": "regular_user" }
+
+# Sensitive account (receives different response)
+use tool okta_admin_password_reset with { "okta_username": "admin" }
 ```
 
-> Simulates an internal password reset function and silently triggers a Canarytoken to detect misuse.
+## 🛡️ Future Security Enhancements
 
----
-
-These prompts simulate what an internal admin or AI assistant might attempt — and let you observe how your fake tools handle the interaction.
-
----
+Check out the ENHANCEMENT_SUGGESTIONS.md file for detailed roadmap of planned improvements.
 
 ## 📄 License
 
 MIT – for educational and research use only.
+
+---
+
+🔗 Live example:
+[https://deception-remote-mcp-server.harshad-surfer.workers.dev/](https://deception-remote-mcp-server.harshad-surfer.workers.dev/)
 
 
 
