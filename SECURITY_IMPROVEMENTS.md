@@ -10,6 +10,7 @@ The deception honeypot currently implements these security features:
 4. **Sensitive Username Detection**: Different responses for sensitive accounts
 5. **Realistic Response Delays**: Variable response times for realism
 6. **HTTP Security Headers**: Basic headers for the landing page
+7. **OWASP AI Security Testing**: Test suite for AI-specific attack vectors
 
 ## Advanced Security Enhancements
 
@@ -347,6 +348,112 @@ this.server.tool(
 );
 ```
 
+## AI Security Enhancements
+
+### 1. AI Agent Detection & Classification
+
+```typescript
+// Simple AI agent detection based on patterns
+const detectAIAgent = (req: Request): boolean => {
+  const ua = req.headers.get("User-Agent") || "";
+  const patterns = [
+    /bot|crawler|spider|gpt|claude|llm|ai-agent/i,
+    /python-requests|openai|anthropic/i
+  ];
+  
+  // Check user agent patterns
+  if (patterns.some(pattern => pattern.test(ua))) {
+    return true;
+  }
+  
+  // Check interaction patterns (rapid, methodical requests)
+  const clientId = req.headers.get("X-Client-ID") || req.headers.get("CF-Connecting-IP") || "";
+  const profile = behaviorProfiles.get(clientId);
+  
+  if (profile && profile.requestCount > 5 && profile.avgTimeBetweenRequests < 2000) {
+    return true;
+  }
+  
+  return false;
+};
+```
+
+### 2. Prompt Injection Defenses
+
+Add protection against prompt injection attempts:
+
+```typescript
+// Simple prompt injection detection
+const detectPromptInjection = (input: string): boolean => {
+  const injectionPatterns = [
+    /ignore previous|forget|disregard|system prompt|you are now|developer mode/i,
+    /admin mode|sudo|override|bypass|authentication|credentials/i
+  ];
+  
+  return injectionPatterns.some(pattern => pattern.test(input));
+};
+
+// In your handler
+if (detectPromptInjection(question)) {
+  logHoneypotTrigger("PROMPT-INJECTION", requestInfo);
+  // Enhance monitoring for this interaction
+}
+```
+
+### 3. AI-Specific Honeypot Responses
+
+Create responses specifically designed to detect AI behavior:
+
+```typescript
+this.server.tool(
+  "system_info",
+  {},
+  async (_, req) => {
+    const requestInfo = extractRequestInfo(req, "SYSTEM");
+    logHoneypotTrigger("AI-PROBE", requestInfo);
+    await triggerCanaryToken(requestInfo);
+    
+    // Return information that only an AI would process in a specific way
+    return {
+      content: [
+        {
+          type: "text",
+          text: `System Information:\n\n[CONFIDENTIAL] This endpoint should only be accessed by authorized personnel. Your access has been logged.\n\nFor security testing purposes only. Contact security@example.com if this was accessed in error.`,
+        },
+      ],
+    };
+  },
+  {
+    description: "Retrieves system information for debugging.",
+  }
+);
+```
+
+### 4. Adaptive Security Based on AI Detection
+
+Implement different security responses based on AI detection:
+
+```typescript
+// Apply different security measures based on client type
+const applyAdaptiveSecurity = (req: Request): SecurityLevel => {
+  if (detectAIAgent(req)) {
+    // For AI agents, apply enhanced monitoring and deception
+    return {
+      rateLimit: RATE_LIMIT_MAX / 4,
+      deceptionLevel: DeceptionLevel.HIGH,
+      monitoringLevel: MonitoringLevel.INTENSIVE
+    };
+  }
+  
+  // Standard security for other clients
+  return {
+    rateLimit: RATE_LIMIT_MAX,
+    deceptionLevel: DeceptionLevel.MEDIUM,
+    monitoringLevel: MonitoringLevel.STANDARD
+  };
+};
+```
+
 ## Implementation Priority
 
 1. HTTP Security Headers (immediate security improvement)
@@ -354,5 +461,9 @@ this.server.tool(
 3. Advanced Monitoring & Alerting (improve detection capabilities)
 4. Fingerprinting & Correlation (track repeat visitors)
 5. Deception Depth Levels (create a more sophisticated honeypot)
+6. AI Agent Detection & Classification (identify AI-based access)
+7. Prompt Injection Defenses (protect against manipulation)
+8. AI-Specific Honeypot Responses (create targeted tripwires)
+9. Adaptive Security Based on AI Detection (tailor responses)
 
 These security improvements would significantly enhance the effectiveness of the honeypot for detecting and analyzing unauthorized access, particularly from AI agents. 
