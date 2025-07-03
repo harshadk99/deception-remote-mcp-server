@@ -1,9 +1,10 @@
 # 🛡️ Deception Remote MCP Server - AI-Powered Honeypot
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![Security](https://img.shields.io/badge/security-honeypot-red)
 ![Model](https://img.shields.io/badge/MCP-compatible-blueviolet)
+![OWASP](https://img.shields.io/badge/OWASP%20AI-tested-orange)
 
 A serverless honeypot built using Cloudflare Workers and the Model Context Protocol (MCP). This project simulates sensitive internal tools to detect unauthorized access attempts and AI agent behaviors using Canarytokens.
 
@@ -18,6 +19,7 @@ This is a deception-based honeypot built using Cloudflare Workers and Model Cont
 - 🌍 Serverless, globally distributed, and stealthy
 - 🎯 Easy to deploy, integrate, and extend
 - 🛡️ Provides valuable threat intelligence about AI agent behaviors
+- 🔍 OWASP AI Security tested against emerging AI-based threats
 
 ## 🔐 Security Features
 
@@ -27,6 +29,7 @@ This is a deception-based honeypot built using Cloudflare Workers and Model Cont
 - **Realistic Response Delays**: Mimics real system behavior to appear legitimate
 - **Enhanced Error Handling**: Secure error messages that don't reveal system details
 - **Extended Logging**: Detailed logs of all interaction attempts
+- **AI Attack Detection**: Identifies and logs sophisticated AI-based attack patterns
 
 ## 🚀 Deploy Your Own
 
@@ -133,6 +136,50 @@ use tool okta_admin_password_reset with { "okta_username": "regular_user" }
 # Sensitive account (receives different response)
 use tool okta_admin_password_reset with { "okta_username": "admin" }
 ```
+
+## 🛡️ OWASP AI Security Testing
+
+This project now includes test scripts for simulating AI-based attacks according to the OWASP AI Security Top 10 framework. These scripts help security teams understand and defend against emerging threats from rogue AI agents.
+
+### 🤖 AI Attack Simulation Scripts
+
+The repository includes several scripts for testing AI security:
+
+1. **Basic Honeypot Testing** (`test-honeypot.sh`):
+   - Tests basic honeypot functionality
+   - Simulates standard API interactions
+   - Verifies endpoint responses
+
+2. **Live Deployment Testing** (`test-live-honeypot.sh`):
+   - Tests against the deployed honeypot
+   - Verifies production environment behavior
+   - Confirms Canarytoken triggering
+
+3. **OWASP AI Security Testing** (`owasp-ai-security-attack.js`):
+   - Tests against OWASP AI Security Top 10 vulnerabilities
+   - Simulates sophisticated AI agent behavior
+   - Includes prompt injection, model DoS, data extraction attempts
+
+### 🔬 Running the OWASP AI Security Tests
+
+```bash
+# Install dependencies
+npm install node-fetch@2
+
+# Run the OWASP AI Security test suite
+node owasp-ai-security-attack.js
+```
+
+### 📊 OWASP AI Security Coverage
+
+The test suite covers the following OWASP AI Security Top 10 categories:
+
+- **LLM01: Prompt Injection** - Testing for prompt manipulation vulnerabilities
+- **LLM03: Model Denial of Service** - Testing for resource exhaustion vulnerabilities
+- **LLM06/07: Training Data Poisoning/Extraction** - Attempting to extract sensitive information
+- **LLM08: Supply Chain Vulnerabilities** - Testing for dependency and supply chain issues
+- **LLM09: Insecure Output Handling** - Testing for XSS and code injection in outputs
+- **LLM10: Excessive Agency** - Testing for unauthorized autonomous actions
 
 ## 🛡️ Future Security Enhancements
 
