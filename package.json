@@ -19,6 +19,8 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.11.4",
 		"agents": "^0.0.88",
+		"event-source-polyfill": "^1.0.31",
+		"node-fetch": "^2.7.0",
 		"zod": "^3.25.7"
 	}
 }
