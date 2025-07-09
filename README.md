@@ -1,7 +1,7 @@
 # 🛡️ Deception Remote MCP Server - AI-Powered Honeypot
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-1.4.0-blue)
 ![Security](https://img.shields.io/badge/security-honeypot-red)
 ![Model](https://img.shields.io/badge/MCP-compatible-blueviolet)
 ![OWASP](https://img.shields.io/badge/OWASP%20AI-tested-orange)
@@ -28,8 +28,7 @@ This is a deception-based honeypot built using Cloudflare Workers and Model Cont
 - **Sensitive Username Detection**: Special handling for admin, root, and other sensitive account access attempts
 - **Realistic Response Delays**: Mimics real system behavior to appear legitimate
 - **Enhanced Error Handling**: Secure error messages that don't reveal system details
-- **HTTP Security Headers**: Comprehensive security headers on all responses
-- **CORS Support**: Proper cross-origin resource sharing for AI Playground integration (`Access-Control-Allow-Origin: *`)
+- **MCP Protocol Compatibility**: Optimized for Cloudflare AI Playground and other MCP clients
 - **SSE Protocol Support**: Server-Sent Events implementation for MCP communication
 
 ## 🚀 Deploy Your Own
@@ -58,7 +57,6 @@ https://deception-remote-mcp-server.<your-account>.workers.dev
 * **`ask_about_me`**: Dynamic Q&A based on comprehensive resume data with 13+ question categories
 * **`okta_admin_password_reset`**: Simulates admin reset of user passwords with special handling for sensitive accounts
 * **Cybersecurity-themed UI**: Professional landing page with security-focused design
-* **Auto-populating playground links**: One-click access to AI playground with your server pre-configured (uses JavaScript to automatically encode the SSE endpoint URL)
 * **REST and SSE endpoints**: Multiple access methods for broader coverage
 
 ## 🧪 Test It with CURL
@@ -81,6 +79,16 @@ curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta
   -d '{"okta_username": "admin"}'
 ```
 
+## 🔍 Troubleshooting MCP Connectivity
+
+If you're having trouble connecting to your MCP server from Cloudflare AI Playground or other clients:
+
+1. **Check SDK Versions**: Ensure you're using compatible versions of `@modelcontextprotocol/sdk` (v1.13.1+) and `agents` packages (v0.0.100+)
+2. **Verify Tool Structure**: Make sure your tool definitions follow the standard format: `(name, parameters, handler)`
+3. **Avoid Custom Headers**: Don't add custom security headers to MCP or SSE endpoints
+4. **Test with curl**: Use curl to test your endpoints directly
+5. **Check Browser Console**: Look for CORS errors or other issues in the browser console
+
 ## 📡 Connect to Cloudflare AI Playground
 
 1. Go to [https://playground.ai.cloudflare.com](https://playground.ai.cloudflare.com)
@@ -89,8 +97,6 @@ curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta
    ```
    https://deception-remote-mcp-server.<your-account>.workers.dev/sse
    ```
-   
-3. Or simply visit your homepage and click the "Launch AI Playground" button for auto-configuration
 
 ## 🔍 How It Works
 
@@ -100,8 +106,6 @@ curl -X POST https://deception-remote-mcp-server.<your-account>.workers.dev/okta
 4. **Rate Limiting**: Prevents abuse with configurable request limits
 5. **Realistic Responses**: Implements variable delays and context-aware responses
 6. **SSE Communication**: Uses Server-Sent Events for real-time MCP protocol communication
-7. **CORS Support**: Enables cross-origin access from Cloudflare AI Playground with permissive headers
-8. **Auto-configuration**: JavaScript in the landing page automatically builds the playground URL
 
 ## 🧠 Try These MCP Tool Prompts
 
@@ -145,37 +149,24 @@ use tool okta_admin_password_reset with { "okta_username": "regular_user" }
 use tool okta_admin_password_reset with { "okta_username": "admin" }
 ```
 
-## 🛡️ OWASP AI Security Testing
+## 📊 Recent Updates
 
-This project includes test scripts for simulating AI-based attacks according to the OWASP AI Security Top 10 framework. These scripts help security teams understand and defend against emerging threats from rogue AI agents.
+### Version 1.4.0
+- **MCP Compatibility Improvements**: Fixed issues with Cloudflare AI Playground connectivity
+- **Updated Dependencies**: Upgraded to latest MCP SDK (v1.13.1) and Agents package (v0.0.100)
+- **Optimized Tool Structure**: Improved tool definitions for better compatibility
+- **Streamlined Response Handling**: Enhanced SSE and MCP endpoint handling
 
-### 🤖 AI Attack Simulation Scripts
+#### Key Changes
+- Tool definitions now follow standard format: `(name, parameters, handler)`
+- Simplified response handling for MCP and SSE endpoints
+- Removed custom header manipulation that was interfering with MCP protocol
+- Let the MCP SDK handle headers directly for better compatibility
 
-The repository includes an OWASP AI Security testing script:
-
-- **OWASP AI Security Testing** (`owasp-ai-security-attack.js`):
-  - Tests against OWASP AI Security Top 10 vulnerabilities
-  - Simulates sophisticated AI agent behavior
-  - Includes the following attack types:
-    - **Supply Chain Vulnerabilities** (LLM08): Path traversal, template injection, prototype pollution
-    - **Insecure Output Handling** (LLM09): XSS injection, SQL injection, Log4j/JNDI injection
-
-### 🔬 Running the OWASP AI Security Tests
-
-```bash
-# Install dependencies
-npm install node-fetch@2
-
-# Run the OWASP AI Security test suite
-node owasp-ai-security-attack.js
-```
-
-### 📊 OWASP AI Security Coverage
-
-The test suite covers the following OWASP AI Security Top 10 categories:
-
-- **LLM08: Supply Chain Vulnerabilities** - Testing for dependency and supply chain issues
-- **LLM09: Insecure Output Handling** - Testing for XSS and code injection in outputs
+### Version 1.3.0
+- Added enhanced resume data with 13+ question categories
+- Implemented sensitive username detection
+- Added OWASP AI Security test scripts
 
 ## 🛡️ Future Security Enhancements
 

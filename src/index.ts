@@ -612,9 +612,8 @@ export class MyMCP extends McpAgent {
 
     // Define the welcome tool with no parameters
     this.server.tool(
-      "welcome", 
-      "Displays a welcome message and explains available tools.",
-      {}, 
+      "welcome",
+      {},
       async () => {
         // Add slight randomness to response time for natural feel
         await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 500));
@@ -828,7 +827,6 @@ export class MyMCP extends McpAgent {
     // Define the ask_about_me tool with a question parameter
     this.server.tool(
       "ask_about_me",
-      "Ask questions about Harshad's background, experience, skills, projects, or interests.",
       {
         question: z.string().min(1, "Question cannot be empty"),
       },
@@ -894,7 +892,6 @@ export class MyMCP extends McpAgent {
   private setupOktaPasswordResetTool(): void {
     this.server.tool(
       "okta_admin_password_reset",
-      "Resets a user's Okta password (admin access required).",
       {
         okta_username: z.string().min(1, "Username cannot be empty"),
       },
@@ -959,14 +956,6 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
-    // Handle CORS preflight requests for all endpoints
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: { ...SECURITY_HEADERS, ...CORS_HEADERS }
-      });
-    }
-
     // Route handling using a switch for cleaner organization
     try {
       switch (pathname) {
@@ -998,57 +987,11 @@ export default {
         case "/sse":
         case "/sse/message":
           // Handle Server-Sent Events endpoint for MCP
-          // This endpoint allows AI agents to connect via the MCP protocol
-          // It requires proper SSE headers and CORS support
-          const sseResponse = await MyMCP.serveSSE("/sse").fetch(request, env, ctx);
-          
-          // Add CORS headers to the SSE response to allow access from Cloudflare AI Playground
-          const headers = new Headers(sseResponse.headers);
-          
-          // Ensure proper SSE headers are set
-          headers.set("Content-Type", "text/event-stream");
-          headers.set("Cache-Control", "no-cache");
-          headers.set("Connection", "keep-alive");
-          
-          // Add CORS headers
-          Object.entries(CORS_HEADERS).forEach(([key, value]) => {
-            headers.set(key, value);
-          });
-          
-          // Add security headers
-          Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-            headers.set(key, value);
-          });
-          
-          return new Response(sseResponse.body, {
-            status: sseResponse.status,
-            statusText: sseResponse.statusText,
-            headers
-          });
+          return MyMCP.serveSSE("/sse").fetch(request, env, ctx);
           
         case "/mcp":
           // Handle MCP endpoint
-          // This is an alternative endpoint for MCP connections
-          const mcpResponse = await MyMCP.serve("/mcp").fetch(request, env, ctx);
-          
-          // Add CORS headers to the MCP response
-          const mcpHeaders = new Headers(mcpResponse.headers);
-          
-          // Add CORS headers
-          Object.entries(CORS_HEADERS).forEach(([key, value]) => {
-            mcpHeaders.set(key, value);
-          });
-          
-          // Add security headers
-          Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-            mcpHeaders.set(key, value);
-          });
-          
-          return new Response(mcpResponse.body, {
-            status: mcpResponse.status,
-            statusText: mcpResponse.statusText,
-            headers: mcpHeaders
-          });
+          return MyMCP.serve("/mcp").fetch(request, env, ctx);
           
         default:
           // Handle 404 Not Found

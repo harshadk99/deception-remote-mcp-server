@@ -9,8 +9,10 @@ The deception honeypot currently implements these security features:
 3. **Rate Limiting**: Basic protection against abuse
 4. **Sensitive Username Detection**: Different responses for sensitive accounts
 5. **Realistic Response Delays**: Variable response times for realism
-6. **HTTP Security Headers**: Robust security headers for all responses
-7. **CORS Support**: Proper cross-origin resource sharing for AI Playground access
+6. **MCP Protocol Compatibility**: Optimized for Cloudflare AI Playground and other MCP clients
+7. **SSE Communication**: Server-Sent Events for real-time MCP protocol communication
+
+> Note: HTTP Security Headers and CORS headers were modified to improve MCP protocol compatibility with Cloudflare AI Playground.
 
 ## Recommended Enhancements
 
