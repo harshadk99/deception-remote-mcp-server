@@ -1,3 +1,7 @@
 node_modules
 .wrangler/
 mcp-config.json
+.DS_Store
+
+# Local Claude isolation (do not commit)
+.claude/settings.local.json

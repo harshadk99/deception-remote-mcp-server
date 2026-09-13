@@ -17,7 +17,7 @@
 		"wrangler": "^4.16.0"
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.13.1",
+		"@modelcontextprotocol/sdk": "^1.25.2",
 		"agents": "^0.0.100",
 		"event-source-polyfill": "^1.0.31",
 		"node-fetch": "^2.7.0",
