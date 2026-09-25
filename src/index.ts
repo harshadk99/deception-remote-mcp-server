@@ -959,7 +959,19 @@ export default {
     // Route handling using a switch for cleaner organization
     try {
       switch (pathname) {
-        case "/":
+        case "/": {
+          // MCP clients that connect to the root URL (e.g. MCP server portals
+          // registered with the bare hostname) are routed to the Streamable
+          // HTTP endpoint; browsers still get the landing page.
+          const accept = request.headers.get("Accept") ?? "";
+          const isMcpRequest =
+            ["POST", "DELETE", "OPTIONS"].includes(request.method) ||
+            (request.method === "GET" && accept.includes("text/event-stream") && !accept.includes("text/html"));
+          if (isMcpRequest) {
+            const mcpUrl = new URL(request.url);
+            mcpUrl.pathname = "/mcp";
+            return MyMCP.serve("/mcp").fetch(new Request(mcpUrl, request), env, ctx);
+          }
           // Serve the landing page
           return new Response(HOME_PAGE_HTML, {
             status: 200,
@@ -969,7 +981,8 @@ export default {
               ...SECURITY_HEADERS
             },
           });
-          
+        }
+
         case "/okta_admin_password_reset":
           // Handle direct REST API access to the Okta reset tool
           if (request.method === "POST") {
