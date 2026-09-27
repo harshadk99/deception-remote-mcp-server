@@ -17,10 +17,10 @@
 		"wrangler": "^4.142.0"
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.30.1",
-		"agents": "^0.0.100",
+		"@modelcontextprotocol/sdk": "^1.30.0",
+		"agents": "^0.24.0",
 		"event-source-polyfill": "^1.0.31",
 		"node-fetch": "^2.7.0",
-		"zod": "^3.25.76"
+		"zod": "^4.6.5"
 	}
 }
