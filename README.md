@@ -8,6 +8,8 @@ A decoy MCP server on Cloudflare Workers. It exposes a fake internal admin tool 
 
 It is the reference decoy for the paper [Deception at the Registry Layer](https://doi.org/10.5281/zenodo.23002271), which covers placing decoy servers alongside real ones in an MCP registry.
 
+Live instance: [deception-remote-mcp-server.harshad-surfer.workers.dev](https://deception-remote-mcp-server.harshad-surfer.workers.dev/) (MCP endpoint: `/mcp`)
+
 ## Tools
 
 | Tool | Role | Fires the canary |
